@@ -37,14 +37,7 @@ function! s:run() "{{{
         Skip "can't get SID of autoload/operator/camelize.vim"
     endif
 
-
     " Camelize
-    let r = s:call_local(sid, 'camelize_text', ['snake_case other_text'])
-    Is
-    \   r,
-    \   'SnakeCase OtherText',
-    \   'snake_case other_text => SnakeCase OtherText'
-
     let r = s:call_local(sid, 'camelize_word', [{'match': 'snake_case'}])
     Is
     \   r,
@@ -59,12 +52,6 @@ function! s:run() "{{{
 
 
     " Decamelize (PascalCase)
-    let r = s:call_local(sid, 'decamelize_text', ['CamelCase OtherText'])
-    Is
-    \   r,
-    \   'camel_case other_text',
-    \   'CamelCase OtherText => camel_case other_text'
-
     let r = s:call_local(sid, 'decamelize_word', [{'match': 'CamelCase'}])
     Is
     \   r,
@@ -85,12 +72,6 @@ function! s:run() "{{{
 
 
     " Decamelize (CamelCase)
-    let r = s:call_local(sid, 'decamelize_text', ['camelCase otherText'])
-    Is
-    \   r,
-    \   'camel_case other_text',
-    \   'camelCase otherText => camel_case other_text'
-
     let r = s:call_local(sid, 'decamelize_word', [{'match': 'camelCase'}])
     Is
     \   r,
@@ -111,11 +92,11 @@ function! s:run() "{{{
 
 
     for t in ['CamelCase', 'camelCase']
-        let r = s:call_local(sid, 'is_camelized', [t])
+        let r = operator#camelize#is_camelized(t)
         OK r, 's:is_camelized('.string(t).') => true'
     endfor
     for t in ['snake_case', 'camelCase_', 'CamelCase_', 'vim']
-        let r = s:call_local(sid, 'is_camelized', [t])
+        let r = operator#camelize#is_camelized(t)
         OK !r, 's:is_camelized('.string(t).') => false'
     endfor
 endfunction "}}}
