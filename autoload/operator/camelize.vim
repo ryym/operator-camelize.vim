@@ -32,6 +32,8 @@ function! s:map_text_with_regex(text, funcname, regex) "{{{
         let context.match = text[offset : offset + len - 1]
         let right         = text[offset + len :]
 
+        echom "of=" . offset . "/len=" . len . "|" . left . ":" . context.match . ":" . right
+
         let context.converted .= left . {a:funcname}(context)
         let text = right
     endwhile
@@ -219,6 +221,8 @@ endfunction "}}}
 
 function! s:toggle_word(context, from_snake) "{{{
     let camelized = g:operator_camelize_detect_function
+  " echom string(operator#camelize#is_camelized(a:context.match)) . ':' . a:context.match . ':' . string(len(a:context.match))
+  echom("-----------")
     if {camelized}(a:context.match)
         return s:word_to_snake(a:context)
     else
