@@ -204,20 +204,36 @@ function! operator#camelize#is_camelized(word) "{{{
 endfunction "}}}
 
 " For a word
-" e.g.: 'SnakeCase' => 'snake_case'
+" e.g.: 'SnakeCase', 'snakeCase' => 'snake_case'
 " e.g.: 'snake_case' => 'SnakeCase'
-function! s:toggle_word(context) "{{{
+function! s:toggle_pascal_snake(context) "{{{
+    return s:toggle_word(a:context, 's:word_to_pascal')
+endfunction "}}}
+
+" For a word
+" e.g.: 'SnakeCase', 'snakeCase' => 'snake_case'
+" e.g.: 'snake_case' => 'snakeCase'
+function! s:toggle_camel_snake(context) "{{{
+    return s:toggle_word(a:context, 's:word_to_camel')
+endfunction "}}}
+
+function! s:toggle_word(context, from_snake) "{{{
     let camelized = g:operator_camelize_detect_function
     if {camelized}(a:context.match)
         return s:word_to_snake(a:context)
     else
-        return s:word_to_pascal(a:context)
+        return {a:from_snake}(a:context)
     endif
 endfunction "}}}
 
-" For <Plug>(operator-camelize-toggle)
-function! operator#camelize#op_camelize_toggle(motion_wiseness) "{{{
-    call s:replace_range('s:toggle_word', '\w\+', a:motion_wiseness)
+" For <Plug>(operator-toggle-pascal-snake)
+function! operator#camelize#op_toggle_pascal_snake(motion_wiseness) "{{{
+    call s:replace_range('s:toggle_pascal_snake', '\w\+', a:motion_wiseness)
+endfunction "}}}
+
+" For <Plug>(operator-toggle-camel-snake)
+function! operator#camelize#op_toggle_camel_snake(motion_wiseness) "{{{
+    call s:replace_range('s:toggle_camel_snake', '\w\+', a:motion_wiseness)
 endfunction "}}}
 
 

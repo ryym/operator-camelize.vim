@@ -22,7 +22,8 @@ endif
 call operator#user#define('to-pascal', 'operator#camelize#op_to_pascal')
 call operator#user#define('to-camel', 'operator#camelize#op_to_camel')
 call operator#user#define('to-snake', 'operator#camelize#op_to_snake')
-call operator#user#define('camelize-toggle', 'operator#camelize#op_camelize_toggle')
+call operator#user#define('toggle-pascal-snake', 'operator#camelize#op_toggle_pascal_snake')
+call operator#user#define('toggle-camel-snake', 'operator#camelize#op_toggle_camel_snake')
 
 
 " Restore 'cpoptions' {{{
