@@ -12,14 +12,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
-if !exists('g:operator_camelize_all_upper_to_snake')
-    let g:operator_camelize_all_upper_to_snake = 'nop'
-endif
-if !exists('g:operator_camelize_all_upper_to_pascal')
-    let g:operator_camelize_all_upper_to_pascal = 'nop'
-endif
-if !exists('g:operator_camelize_all_upper_to_camel')
-    let g:operator_camelize_all_upper_to_camel = 'nop'
+if !exists('g:operator_camelize_convert_all_upper_word')
+    let g:operator_camelize_convert_all_upper_word = 0
 endif
 if !exists('g:operator_camelize_detect_function')
     let g:operator_camelize_detect_function = 'operator#camelize#is_camelized'

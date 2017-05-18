@@ -112,23 +112,8 @@ function! s:word_to_pascal(context) "{{{
 
     let word = a:context.match
 
-    if word =~# '^[A-Z]\+$'
-        let action = g:operator_camelize_all_upper_to_pascal
-        if action ==# 'nop'
-            " "WORD" => "WORD"
-            return word
-        elseif action ==# 'lowercase'
-            " "WORD" => "word"
-            return tolower(word)
-        elseif action ==# 'camelize'
-            " "WORD" => "Word"
-            return toupper(word[0]) . tolower(word[1:])
-        else
-            echohl WarningMsg
-            echomsg "g:operator_camelize_all_upper_to_pascal is invalid value '"
-            \       . g:operator_camelize_all_upper_to_pascal . "'."
-            echohl None
-        endif
+    if word =~# '^[A-Z]\+$' && !g:operator_camelize_convert_all_upper_word
+        return word
     endif
 
     return s:map_text_with_regex(
@@ -149,20 +134,8 @@ endfunction "}}}
 function! s:word_to_camel(context) "{{{
     let word = a:context.match
 
-    if word =~# '^[A-Z]\+$'
-        let action = g:operator_camelize_all_upper_to_camel
-        if action ==# 'nop'
-            " "WORD" => "WORD"
-            return word
-        elseif action ==# 'lowercase'
-            " "WORD" => "word"
-            return tolower(word)
-        else
-            echohl WarningMsg
-            echomsg "g:operator_camelize_all_upper_to_camel is invalid value '"
-            \       . g:operator_camelize_all_upper_to_camel . "'."
-            echohl None
-        endif
+    if word =~# '^[A-Z]\+$' && !g:operator_camelize_convert_all_upper_word
+        return word
     endif
 
     let pascal_word = s:map_text_with_regex(
@@ -196,20 +169,8 @@ function! s:word_to_snake(context) "{{{
 
     let word = a:context.match
 
-    if word =~# '^[A-Z]\+$'
-        let action = g:operator_camelize_all_upper_to_snake
-        if action ==# 'nop'
-            " "WORD" => "WORD"
-            return word
-        elseif action ==# 'lowercase'
-            " "WORD" => "word"
-            return word
-        else
-            echohl WarningMsg
-            echomsg "g:operator_camelize_all_upper_to_snake is invalid value '"
-            \       . g:operator_camelize_all_upper_to_snake . "'."
-            echohl None
-        endif
+    if word =~# '^[A-Z]\+$' && !g:operator_camelize_convert_all_upper_word
+        return word
     endif
 
     return s:map_text_with_regex(
