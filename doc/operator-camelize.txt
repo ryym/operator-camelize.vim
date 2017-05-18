@@ -2,7 +2,7 @@
 
 Author:
   tyru <tyru.exe@gmail.com>
-Version: 0.0.6
+Version: 0.1.0
 License:
 NEW BSD LICENSE {{{
   Copyright (c) 2010, tyru
@@ -43,45 +43,44 @@ INTERFACE				*operator-camelize-interface* {{{
 ------------------------------------------------------------------------------
 KEYMAPPINGS					*operator-camelize-keymappings* {{{
 
-<Plug>(operator-camelize)
-	Do camelize.
+<Plug>(operator-to-pascal)
+	Convert to PascalCase.
 
-<Plug>(operator-decamelize)
-	Do decamelize.
+<Plug>(operator-to-camel)
+	Convert to camelCase.
 
-<Plug>(operator-camelize-toggle)
-	Do decamelize if a word is camelized.
-	Do camelize otherwise.
+<Plug>(operator-to-snake)
+	Convert to snake_case (from camelCase or PascalCase).
 
+<Plug>(operator-toggle-pascal-snake)
+	Toggle PascalCase and snake_case.
+	(pascal or camel -> snake, snake -> pascal)
+
+<Plug>(operator-toggle-camel-snake)
+	Toggle camelCase and snake_case.
+	(pascal or camel -> snake, snake -> camel)
 
 No default keymappings.
 Please map yourself as follows: >
-	map <Leader>c <Plug>(operator-camelize)
-	map <Leader>C <Plug>(operator-decamelize)
+	map <Leader>c <Plug>(operator-to-pascal)
+	map <Leader>C <Plug>(operator-to-snake)
 <
 
 }}}
 ------------------------------------------------------------------------------
 VARIABLES					*operator-camelize-variables* {{{
 
-g:operator_camelize_all_uppercase_action		*g:operator_camelize_all_uppercase_action*
-									(Default: "nop")
-		<Plug>(operator-camelize)'s action for word whose characters are all capitals like 'CAMEL'.
+g:operator_camelize_convert_all_upper_word		*g:operator_camelize_convert_all_upper_word*
+									(Default: 0)
+	If this option is 1, the operators convert a word whose characters are
+	all capitals like 'CAMEL'.
 
-		e.g., {value} is "WORD"
-		option value		{value} ~
-		"nop"				"WORD"
-		"lowercase" 		"word"
-		"camelize"			"Word"
+	e.g., "WORD" is converted like below:
+	to-pascal		"Word"
+	to-camel		"word"
+	to-snake		"word"
 
-g:operator_decamelize_all_uppercase_action		*g:operator_decamelize_all_uppercase_action*
-									(Default: "nop")
-		<Plug>(operator-decamelize)'s action for word whose characters are all capitals like 'CAMEL'.
-
-		e.g., {value} is "WORD"
-		option value		{value} ~
-		"nop"				"WORD"
-		"lowercase" 		"word"
+	If the option is 0, the operators do nothing for upper case words.
 
 g:operator_camelize_detect_function		*g:operator_camelize_detect_function*
 									(Default: "operator#camelize#is_camelized")
@@ -131,6 +130,12 @@ CHANGELOG						*operator-camelize-changelog* {{{
 - Fix problem that "vim" is recognized as the camelized word.
 - Deprecate g:operator_camelize_all_uppercase_action = "decamelize"
 - Add variable g:operator_camelize_detect_function.
+0.1.0:
+- Distinguish camelCase and PascalCase.
+- Rename all current key mappings and functions.
+	- camelize -> to pascal
+	- decamelize -> to snake
+- Add 'to-camel' functionality.
 
 }}}
 ==============================================================================
