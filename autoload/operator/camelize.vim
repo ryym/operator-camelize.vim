@@ -144,6 +144,40 @@ function! operator#camelize#op_to_pascal(motion_wiseness) "{{{
 endfunction "}}}
 
 
+" For a word
+" e.g.: 'snake_case' => 'snakeCase'
+function! s:word_to_camel(context) "{{{
+    let word = a:context.match
+
+    if word =~# '^[A-Z]\+$'
+        let action = g:operator_camelize_all_upper_to_camel
+        if action ==# 'nop'
+            " "WORD" => "WORD"
+            return word
+        elseif action ==# 'lowercase'
+            " "WORD" => "word"
+            return tolower(word)
+        else
+            echohl WarningMsg
+            echomsg "g:operator_camelize_all_upper_to_camel is invalid value '"
+            \       . g:operator_camelize_all_upper_to_camel . "'."
+            echohl None
+        endif
+    endif
+
+    let pascal_word = s:map_text_with_regex(
+    \   word,
+    \   's:atom_to_pascal',
+    \   '\<[a-zA-Z0-9]\+\|_[a-zA-Z0-9]\+'.'\C'
+    \)
+    return tolower(pascal_word[0]) . pascal_word[1:]
+endfunction "}}}
+
+" For <Plug>(operator-to-camel)
+function! operator#camelize#op_to_camel(motion_wiseness) "{{{
+    call s:replace_range('s:word_to_camel', '\w\+', a:motion_wiseness)
+endfunction "}}}
+
 
 " For a atom
 " e.g.: 'Snake' => 'snake'

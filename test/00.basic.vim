@@ -51,6 +51,14 @@ function! s:run() "{{{
     \   'snake => Snake'
 
 
+    " Camelize
+    let r = s:call_local(sid, 'word_to_camel', [{'match': 'snake_case'}])
+    Is
+    \   r,
+    \   'snakeCase',
+    \   'snake_case => snakeCase'
+
+
     " Decamelize (PascalCase)
     let r = s:call_local(sid, 'word_to_snake', [{'match': 'CamelCase'}])
     Is
