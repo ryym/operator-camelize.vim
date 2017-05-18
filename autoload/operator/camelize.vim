@@ -147,14 +147,14 @@ endfunction "}}}
 
 " For a atom
 " e.g.: 'Snake' => 'snake'
-function! s:decamelize_atom(context) "{{{
+function! s:atom_to_snake(context) "{{{
     return (a:context.converted ==# '' ? '' : '_')
     \       . tolower(a:context.match)
 endfunction "}}}
 
 " For a word
-" e.g.: 'SnakeCase' => 'snake_case'
-function! s:decamelize_word(context) "{{{
+" e.g.: 'snakeCase', 'SnakeCase' => 'snake_case'
+function! s:word_to_snake(context) "{{{
     " NOTE: Nested sub-replace-expression can't work...omg
     " (:help sub-replace-expression)
     "
@@ -163,7 +163,7 @@ function! s:decamelize_word(context) "{{{
     let word = a:context.match
 
     if word =~# '^[A-Z]\+$'
-        let action = g:operator_decamelize_all_uppercase_action
+        let action = g:operator_camelize_all_upper_to_snake
         if action ==# 'nop'
             " "WORD" => "WORD"
             return word
@@ -172,22 +172,22 @@ function! s:decamelize_word(context) "{{{
             return word
         else
             echohl WarningMsg
-            echomsg "g:operator_decamelize_all_uppercase_action is invalid value '"
-            \       . g:operator_decamelize_all_uppercase_action . "'."
+            echomsg "g:operator_camelize_all_upper_to_snake is invalid value '"
+            \       . g:operator_camelize_all_upper_to_snake . "'."
             echohl None
         endif
     endif
 
     return s:map_text_with_regex(
     \   word,
-    \   's:decamelize_atom',
+    \   's:atom_to_snake',
     \   '^[a-z0-9]\+\ze[A-Z]\|^[A-Z][a-z0-9]*'.'\C',
     \)
 endfunction "}}}
 
-" For <Plug>(operator-decamelize)
-function! operator#camelize#op_decamelize(motion_wiseness) "{{{
-    call s:replace_range('s:decamelize_word', '\w\+', a:motion_wiseness)
+" For <Plug>(operator-to-snake)
+function! operator#camelize#op_to_snake(motion_wiseness) "{{{
+    call s:replace_range('s:word_to_snake', '\w\+', a:motion_wiseness)
 endfunction "}}}
 
 
@@ -214,7 +214,7 @@ endfunction "}}}
 function! s:toggle_word(context) "{{{
     let camelized = g:operator_camelize_detect_function
     if {camelized}(a:context.match)
-        return s:decamelize_word(a:context)
+        return s:word_to_snake(a:context)
     else
         return s:camelize_word(a:context)
     endif

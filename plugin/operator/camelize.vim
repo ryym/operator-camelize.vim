@@ -12,8 +12,8 @@ let s:save_cpo = &cpo
 set cpo&vim
 " }}}
 
-if !exists('g:operator_decamelize_all_uppercase_action')
-    let g:operator_decamelize_all_uppercase_action = 'nop'
+if !exists('g:operator_camelize_all_upper_to_snake')
+    let g:operator_camelize_all_upper_to_snake = 'nop'
 endif
 if !exists('g:operator_camelize_all_uppercase_action')
     let g:operator_camelize_all_uppercase_action = 'nop'
@@ -23,7 +23,7 @@ if !exists('g:operator_camelize_detect_function')
 endif
 
 call operator#user#define('camelize', 'operator#camelize#op_camelize')
-call operator#user#define('decamelize', 'operator#camelize#op_decamelize')
+call operator#user#define('to-snake', 'operator#camelize#op_to_snake')
 call operator#user#define('camelize-toggle', 'operator#camelize#op_camelize_toggle')
 
 
