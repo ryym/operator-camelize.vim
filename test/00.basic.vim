@@ -37,14 +37,14 @@ function! s:run() "{{{
         Skip "can't get SID of autoload/operator/camelize.vim"
     endif
 
-    " Camelize
-    let r = s:call_local(sid, 'camelize_word', [{'match': 'snake_case'}])
+    " Pascalize
+    let r = s:call_local(sid, 'word_to_pascal', [{'match': 'snake_case'}])
     Is
     \   r,
     \   'SnakeCase',
     \   'snake_case => SnakeCase'
 
-    let r = s:call_local(sid, 'camelize_atom', [{'match': 'snake'}])
+    let r = s:call_local(sid, 'atom_to_pascal', [{'match': 'snake'}])
     Is
     \   r,
     \   'Snake',

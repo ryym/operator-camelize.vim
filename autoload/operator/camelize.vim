@@ -97,14 +97,14 @@ endfunction "}}}
 
 " For a atom
 " e.g.: 'snake' => 'Snake'
-function! s:camelize_atom(context) "{{{
+function! s:atom_to_pascal(context) "{{{
     let word = a:context.match[0] == '_' ? a:context.match[1:] : a:context.match
     return toupper(word[0]) . tolower(word[1:])
 endfunction "}}}
 
 " For a word
 " e.g.: 'snake_case' => 'SnakeCase'
-function! s:camelize_word(context) "{{{
+function! s:word_to_pascal(context) "{{{
     " NOTE: Nested sub-replace-expression can't work...omg
     " (:help sub-replace-expression)
     "
@@ -113,7 +113,7 @@ function! s:camelize_word(context) "{{{
     let word = a:context.match
 
     if word =~# '^[A-Z]\+$'
-        let action = g:operator_camelize_all_uppercase_action
+        let action = g:operator_camelize_all_upper_to_pascal
         if action ==# 'nop'
             " "WORD" => "WORD"
             return word
@@ -125,22 +125,22 @@ function! s:camelize_word(context) "{{{
             return toupper(word[0]) . tolower(word[1:])
         else
             echohl WarningMsg
-            echomsg "g:operator_camelize_all_uppercase_action is invalid value '"
-            \       . g:operator_camelize_all_uppercase_action . "'."
+            echomsg "g:operator_camelize_all_upper_to_pascal is invalid value '"
+            \       . g:operator_camelize_all_upper_to_pascal . "'."
             echohl None
         endif
     endif
 
     return s:map_text_with_regex(
     \   word,
-    \   's:camelize_atom',
+    \   's:atom_to_pascal',
     \   '\<[a-zA-Z0-9]\+\|_[a-zA-Z0-9]\+'.'\C'
     \)
 endfunction "}}}
 
-" For <Plug>(operator-camelize)
-function! operator#camelize#op_camelize(motion_wiseness) "{{{
-    call s:replace_range('s:camelize_word', '\w\+', a:motion_wiseness)
+" For <Plug>(operator-to-pascal)
+function! operator#camelize#op_to_pascal(motion_wiseness) "{{{
+    call s:replace_range('s:word_to_pascal', '\w\+', a:motion_wiseness)
 endfunction "}}}
 
 
@@ -216,7 +216,7 @@ function! s:toggle_word(context) "{{{
     if {camelized}(a:context.match)
         return s:word_to_snake(a:context)
     else
-        return s:camelize_word(a:context)
+        return s:word_to_pascal(a:context)
     endif
 endfunction "}}}
 
